@@ -26,7 +26,7 @@ async def send_fact(update: Update, context: CallbackContext):
 async def post_init(application: Application):
     await application.bot.set_my_commands(
         [
-            BotCommand('/getfact', 'Новый факт про Анатолия'),
+            BotCommand('/getfact', 'Новый факт про Анатолия Вассермана'),
         ]
     )
 
