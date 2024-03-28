@@ -17,11 +17,11 @@ with open('facts.txt', 'r') as f:
     facts = f.read().strip().split('\n')
 
 async def start_handle(update: Update, context: CallbackContext):
-    await update.message.from_user.send_message(config["start_message"])
+    await update.message.reply_text(config["start_message"])
 
 async def send_fact(update: Update, context: CallbackContext):
     random_fact = facts[random.randint(0, len(facts) - 1)]
-    await update.message.from_user.send_message(random_fact)
+    await update.message.reply_text(random_fact)
 
 async def post_init(application: Application):
     await application.bot.set_my_commands(
