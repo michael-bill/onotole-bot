@@ -10,6 +10,9 @@ from telegram.ext import (
 )
 import json
 import random
+import logging
+
+logging.basicConfig(filename='main.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 with open('config.json', 'r') as f:
     config = json.loads(f.read())
