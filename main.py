@@ -27,11 +27,11 @@ with open('facts.txt', 'r') as f:
     facts = f.read().strip().split('\n')
 
 async def start_handle(update: Update, context: CallbackContext):
-    logger.info(f"@{update.message.from_user.username} : {update.message.text}")
-    await update.message.reply_text(config["start_message"])
+    logger.info(f'@{update.message.from_user.username} : {update.message.text}')
+    await update.message.reply_text(config['start_message'])
 
 async def send_fact(update: Update, context: CallbackContext):
-    logger.info(f"@{update.message.from_user.username} : {update.message.text}")
+    logger.info(f'@{update.message.from_user.username} : {update.message.text}')
     random_fact = facts[random.randint(0, len(facts) - 1)]
     await update.message.reply_text(random_fact)
 
@@ -43,7 +43,7 @@ async def post_init(application: Application):
     )
 
 async def log_message(update: Update, context: CallbackContext):
-    logger.info(f"@{update.message.from_user.username} : {update.message.text}")
+    logger.info(f'@{update.message.from_user.username} : {update.message.text}')
 
 def run_bot() -> None:
     application = (
@@ -53,7 +53,7 @@ def run_bot() -> None:
         .post_init(post_init)
         .build()
     )
-    application.add_handler(CommandHandler("start", start_handle))
+    application.add_handler(CommandHandler('start', start_handle))
     application.add_handler(CommandHandler('getfact', send_fact))
     application.add_handler(MessageHandler(filters.TEXT, log_message))
     application.run_polling()
