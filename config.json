@@ -1,4 +1,4 @@
 {
     "tg_bot_token": "YOUR_TOKEN_HERE",
-    "start_message": "Введите команду /getfact, чтобы узнать об Анатолии Вассермане больше."
+    "start_message": "/onotole_fact чтобы узнать об Анатолии Вассермане больше.\n/jason_quote чтобы узнать цитату от Джейсона Стетхема."
 }

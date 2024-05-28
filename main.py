@@ -23,22 +23,31 @@ logger.addHandler(log_file_handler)
 
 with open('config.json', 'r') as f:
     config = json.loads(f.read())
-with open('facts.txt', 'r') as f:
-    facts = f.read().strip().split('\n')
+with open('./data/onotole-facts.txt', 'r') as f:
+    onotole_facts = f.read().strip().split('\n')
+with open('./data/jason-quotes.txt', 'r') as f:
+    jason_quotes = f.read().strip().split('\n')
 
 async def start_handle(update: Update, context: CallbackContext):
     logger.info(f'@{update.message.from_user.username} : {update.message.text}')
     await update.message.reply_text(config['start_message'])
 
-async def send_fact(update: Update, context: CallbackContext):
+async def send_onotole_fact(update: Update, context: CallbackContext):
     logger.info(f'@{update.message.from_user.username} : {update.message.text}')
-    random_fact = facts[random.randint(0, len(facts) - 1)]
+    random_fact = onotole_facts[random.randint(0, len(onotole_facts) - 1)]
     await update.message.reply_text(random_fact)
+
+async def send_jason_quote(update: Update, context: CallbackContext):
+    logger.info(f'@{update.message.from_user.username} : {update.message.text}')
+    random_quote = jason_quotes[random.randint(0, len(jason_quotes) - 1)]
+    await update.message.reply_text(random_quote)
 
 async def post_init(application: Application):
     await application.bot.set_my_commands(
         [
-            BotCommand('/getfact', 'Новый факт про Анатолия Вассермана'),
+            BotCommand('/start', 'Информация о боте'),
+            BotCommand('/onotole_fact', 'Новый факт про Анатолия Вассермана'),
+            BotCommand('/jason_quote', 'Цитата от Джейсона Стетхема'),
         ]
     )
 
@@ -54,7 +63,8 @@ def run_bot() -> None:
         .build()
     )
     application.add_handler(CommandHandler('start', start_handle))
-    application.add_handler(CommandHandler('getfact', send_fact))
+    application.add_handler(CommandHandler('onotole_fact', send_onotole_fact))
+    application.add_handler(CommandHandler('jason_quote', send_jason_quote))
     application.add_handler(MessageHandler(filters.TEXT, log_message))
     application.run_polling()
 
