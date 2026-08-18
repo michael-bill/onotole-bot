@@ -1,19 +1,21 @@
-from telegram import (
-    BotCommand,
-    Update
-)
+import json
+import logging
+import os
+import random
+from logging.handlers import RotatingFileHandler
+
+from dotenv import load_dotenv
+from telegram import BotCommand, Update
 from telegram.ext import (
     Application,
     ApplicationBuilder,
     CallbackContext,
     CommandHandler,
     MessageHandler,
-    filters
+    filters,
 )
-import json
-import random
-import logging
-from logging.handlers import RotatingFileHandler
+
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -55,13 +57,17 @@ async def log_message(update: Update, context: CallbackContext):
     logger.info(f'@{update.message.from_user.username} : {update.message.text}')
 
 def run_bot() -> None:
-    application = (
+    proxy = os.getenv("TELEGRAM_PROXY", "").strip() or None
+    builder = (
         ApplicationBuilder()
         .token(config['tg_bot_token'])
         .concurrent_updates(True)
         .post_init(post_init)
-        .build()
     )
+    if proxy:
+        builder = builder.proxy(proxy).get_updates_proxy(proxy)
+        logger.info("Используется прокси: %s", proxy.split("@")[-1])
+    application = builder.build()
     application.add_handler(CommandHandler('start', start_handle))
     application.add_handler(CommandHandler('onotole_fact', send_onotole_fact))
     application.add_handler(CommandHandler('jason_quote', send_jason_quote))
